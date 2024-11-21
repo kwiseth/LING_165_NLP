@@ -1,3 +1,4 @@
+# Updated 2024-30-March (kwiseth)
 # Ling 165 Lab 1 kwiseth Feb and Mar 2013
 # train.py
 # Create dictionary of bigrams from training data (brown.train)
@@ -13,12 +14,12 @@
 
 
 import sys, pickle, bigram
-sys.path.append('/home/students/ling165/lab1/')
+sys.path.append('lab_1/data')
 
 # This is the main processing loop. We open the training data file.close
 # At runtime, enable/disable appropriate path as needed.
 
-trainfile = open('/home/students/ling165/lab1/data/brown.train', 'r') 
+trainfile = open('data/brown.train', 'r') 
 #trainfile = open('my.train', 'r')
 #trainfile = open('my.train.SMALL', 'r')
 train_data = trainfile.readlines()
@@ -39,35 +40,36 @@ for line in train_data:
 	vocab_list = bigram.get_words(line)
 	vocab_freq_dict = bigram.update_vocabulary(vocab_list,vocab_freq_dict)
 		  
-print "**************************************"
-print "Training Data Summary Information "
-print "-------------------"
-print "Bigram details: "
-print len(bigram_freq_dict) 
-print "number of tokens: "
-print sum(bigram_freq_dict.values())
-print "unique bigrams: "
-print sum(bigram_freq_dict[bigram] for bigram in bigram_freq_dict if bigram_freq_dict[bigram]==1)
-print "-------------------"
-print "Vocabulary details: "
-print "Words (types) in vocabulary: "
-print len(vocab_freq_dict)
-print "Word count (tokens) in vocabulary"
-print sum(vocab_freq_dict.values())
-print "Unique words in vocabulary"
-print sum(vocab_freq_dict[word] for word in vocab_freq_dict if vocab_freq_dict[word] == 1 ) #hapax
-print "*****************************************"
+print("**************************************")
+print("Training Data Summary Information ")
+print("-------------------")
+print("Bigram details: ")
+print("number of bigrams: (length of bigram_freq_dict)")
+print(len(bigram_freq_dict))
+print("number of tokens: (sum of bigram_freq_dict values) ")
+print(sum(bigram_freq_dict.values()))
+print("unique bigrams: (sum of all bigram_freq_dict bigrams that are equal to 1 )")
+print(sum(bigram_freq_dict[bigram] for bigram in bigram_freq_dict if bigram_freq_dict[bigram]==1))
+print("-------------------")
+print("Vocabulary details: ")
+print("Words (types) in vocabulary: ")
+print(len(vocab_freq_dict))
+print("Word count (tokens) in vocabulary")
+print(sum(vocab_freq_dict.values()))
+print("Unique words in vocabulary")
+print(sum(vocab_freq_dict[word] for word in vocab_freq_dict if vocab_freq_dict[word] == 1 )) #hapax
+print("*****************************************")
 
 # Bigram frequency dictionary has been created.
 # Save the bigram dictionary for later use.
-bd = open('bigram_freq.save','w')
+bd = open('bigram_freq.save','wb')
 pickle.dump(bigram_freq_dict,bd)
 bd.close() 
 
 # Vocabulary frequency dictionary has been created.
 # Save this for later use.
-voc = open('vocab.save', 'w')
+voc = open('vocab.save', 'wb')
 pickle.dump(vocab_freq_dict, voc)
 voc.close()
 
-print "Training data processed. Bigram dictionary and vocabulary dictionary saved. "
+print("Training data processed. Bigram dictionary and vocabulary dictionary saved. ")

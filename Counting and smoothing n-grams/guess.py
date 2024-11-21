@@ -8,12 +8,14 @@
 import sys, pickle
 import bigram, probs
 
-sys.path.append('/home/students/ling165/lab1/')
-import sgt
+import sgt_new
+
+sys.path.append('lab_1/')
+
 
 # Open the test file and process bigrams.
 
-testfile = open('/home/students/ling165/lab1/data/brown.test', 'r') 
+testfile = open('data/brown.test', 'r') 
 #testfile = open('my.test', 'r')
 #testfile = open('my.test.SMALL', 'r')
 test_data = testfile.readlines()
@@ -33,9 +35,9 @@ for line in test_data:
 # at this same time (using Hahn's script) since we have the file open.
 # bfd is handle for bigram_freq_dict (bigram frequency dictionary)
 
-bfd = open('bigram_freq.save','r')
+bfd = open('bigram_freq.save','rb')
 bfd_train = pickle.load(bfd)
-adjusted_freq_dict = sgt.gt_freq(bfd_train)    # Dictionary of adjusted freqs for sgt
+adjusted_freq_dict = sgt_new.gt_freq(bfd_train)    # Dictionary of adjusted freqs for sgt
 bfd.close()
 
 # Let's get some of the values we'll need from training data Bigrams.
@@ -46,7 +48,7 @@ train_N_hapax = sum(bfd_train[word] for word in bfd_train if bfd_train[word] == 
 
 # Need to get our vocabulary count details, so let's open
 # the unigram frequency dictionary we saved.
-voc = open('vocab.save','r')
+voc = open('vocab.save','rb')
 voc_train = pickle.load(voc)
 voc.close()
 
@@ -73,23 +75,23 @@ add_one_denom = float(train_N_tokens + pos_bgm_B)
 #N_zero = pos_bgm_B - train_N_hapaX
 N_zero = pos_bgm_B - train_N_types
 
-print "F_true\t\t\tF_mle\t\t\tF_one\t\t\tF_sgt"
+
+# print(rpy2.__version__)
+
+# print("F_true\t\t\tF_mle\t\t\tF_one")
+print("F_true\t\t\tF_mle\t\t\tF_one\t\t\tF_sgt")
 
 for tru_freq in range(1, 11):
-	bucket = [bigram for bigram, count in true_bgm_freq.iteritems() if count == tru_freq]
-	#print bucket
+	bucket = [bigram for bigram, count in true_bgm_freq.items() if count == tru_freq]
 	mle_counts = [probs.get_mle(bigram, bfd_train, train_N_tokens, test_N_bgm_toks) for bigram in bucket]
 	one_counts = [probs.get_one(bigram, bfd_train, voc_train, test_N_bgm_toks) for bigram in bucket]
 	sgt_counts = [probs.get_sgt(bigram, bfd_train, train_N_tokens, train_N_hapax, voc_train, adjusted_freq_dict, test_N_bgm_toks) for bigram in bucket]
 	#print sum(mle_counts)/len(mle_counts)
 	#print "**************"
 	#print sum(one_counts)/len(one_counts)
-	print str(tru_freq) + '\t\t' + str(sum(mle_counts)/len(mle_counts)) + '\t\t' + str(sum(one_counts)/len(one_counts)) \
-		  + '\t\t' + str(sum(sgt_counts)/len(sgt_counts))
+	print(str(tru_freq) + '\t\t' + str(sum(mle_counts)/len(mle_counts)) + '\t\t' + str(sum(one_counts)/len(one_counts)) \
+		  + '\t\t' + str(sum(sgt_counts)/len(sgt_counts)))
+#	print(str(tru_freq) + '\t\t' + str(sum(mle_counts)/len(mle_counts)) + '\t\t' + str(sum(one_counts)/len(one_counts)))
 	
 
-print "Phew! Lab 1 complete. ;-)"
-
-
-	
-
+print("Lab 1 results.")
