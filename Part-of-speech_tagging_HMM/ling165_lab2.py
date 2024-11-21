@@ -1,3 +1,5 @@
+# 21-Nov-2024 Updating code for python and other changes
+# Part of speech (POS) tagging
 # Ling 165 kwiseth
 # 27-August-2013 Final version
 # This script demonstrates using a first-order HMM (built from training data) for determining POS tags
@@ -8,10 +10,12 @@
 
 # ling165_lab2.py
 
-import sys, os
-import cPickle as pickle
+import sys, os, pickle
+# import cPickle as pickle
 
-sys.path.append('/home/students/ling165/lab2')
+
+# sys.path.append('/home/students/ling165/lab2')
+# sys.path.append('')
 
 import smooth165, viterbi
 
@@ -36,7 +40,8 @@ def do_training(some_dataset_number):
     afd = {}
     bfd = {}
     
-    trn_f = '/home/students/ling165/lab2/data/brown.train.' + str(some_dataset_number)
+    # trn_f = '/home/students/ling165/lab2/data/brown.train.' + str(some_dataset_number)
+    trn_f = 'data_3_only/brown.train.' + str(some_dataset_number)
     afd_f = 'afd_' + str(some_dataset_number) + '.save' # Pickled dictionary file to save
     bfd_f = 'bfd_' + str(some_dataset_number) + '.save' # Pickeled dictionary file to save
  
@@ -92,7 +97,8 @@ def do_tagging(some_dataset_number, some_dict_a, some_dict_b):
     """ Accepts a test file along with the matching dictionarie (from training) and
     tags the words and outputs the file to a file name matching the dataset."""
 
-    tag_f = '/home/students/ling165/lab2/data/brown.test.' + str(some_dataset_number)
+    tag_f = 'data_3_only/brown.test.' + str(some_dataset_number)
+#    tag_f = '/home/students/ling165/lab2/data/brown.test.' + str(some_dataset_number)
     out_f = 'tagged_output_' + str(some_dataset_number) + '.save'
 
     tstfile = open(tag_f, 'r')
@@ -198,7 +204,7 @@ while sel_num != 0:
     Results are printed at the end.
     0 - Exit
     1-5 Process any single training/testing/answer dataset 
-    6 - Process all five datasets
+    6 - Process all five datasets [DATA NOT AVAILABLE Nov 2024]
     9 - Print report
     --------------------------------------------------------------
     """
@@ -240,7 +246,7 @@ while sel_num != 0:
                 out_file = do_tagging(num, a, b)
                 result = do_evaluate(num)
                 print("Current result:")
-                print result
+                print(result)
                 # add result to report dictionary
                 report_data[num] = result
                 # pickle and save dictionary

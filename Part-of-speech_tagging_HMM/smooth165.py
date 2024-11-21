@@ -5,7 +5,7 @@ __author__ = """Hahn Koo (hahn.koo@sjsu.edu)"""
 import time
 import sys
 import pickle
-import sgt
+import sgt_new
 
 unk = '<UNK>'
 
@@ -116,12 +116,12 @@ def main(argv):
 	(avx,avy) = count_types(afd)
 	a = gt_cond(afd,avx,avy)
 	et = time.time()
-	print '## A complete in',et-st,'seconds.'
+	print('## A complete in',et-st,'seconds.')
 	st = time.time()
 	(bvx,bvy) = count_types(bfd)
 	b = gt_cond(bfd,bvx,bvy)
 	et = time.time()
-	print '## B complete in',et-st,'seconds.'
+	print('## B complete in',et-st,'seconds.')
 	f = open('a','wb')
 	pickle.dump(a,f)
 	f.close()

@@ -1,3 +1,5 @@
+# spell_check.py
+# 21-Nov-2024 Revising lab 5 from Ling 165 for python and other improvements.
 # Ling 165 kwiseth  1-Sept-2013
 # This script looks-up a word entered at the command line in the brown.words file, and if found, prints the word.
 # If not found, the script then narrows the search space in brown to words that are +2/-1 length of word entered and
@@ -15,8 +17,6 @@ import sys, os
 from operator import itemgetter
 
 
-#brown_f = open('my.words', 'r')  # preliminary testing
-#brown_f = open('brown.words', 'r') #local testing
 brown_f = open('brown.words', 'r') 
 brown_words = brown_f.readlines()
 brown_f.close()
