@@ -1,0 +1,39 @@
+
+source = "cave"
+target = "cares"
+
+
+n = len(target)
+m = len(source)
+distance = [[0 for i in range(m + 1)] for j in range(n + 1)]
+print distance
+
+for i in range(1, n + 1):
+print i
+
+distance[i][0] = distance[i-1][0] + insertCost(target[i-1])
+print distance[i][0]
+print distance
+
+for j in range(1, m + 1):
+distance[0][j] = distance[0][j-1] + deleteCost(source[j-1])
+for i in range(1, n+1):
+for j in range(1, m+1):
+distance[i][j] = min(distance[i-1][j]+1, distance[i][j-1]+1, distance[i-1][j-1] + substitutionCost(source[j-1], target[i-1]))
+print distance[n][m]
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+                '''
+                brown_words_smaller = [word for word in brown_words if len(word) >= len(test_word)+2 or len(word) <=len(test_word)-2]
+                for word in brown_words_smaller:
+                    if levenshtein(test_word, word) == 1:
+                        print test_word, word, levenshtein(test_word, word)
+                    elif levenshtein(test_word, word) == 2:
+                        print test_word, word, levenshtein(test_word, word)
+                    elif levenshtein(test_word, word) == 3:
+                        print test_word, word, levenshtein(test_word, word)
+                '''
+
