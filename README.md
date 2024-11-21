@@ -1,2 +1,2 @@
-# LING 165 Natural Language Processing (NLP) projects
-WIP. More to do.
+# Natural Language Processing (NLP) projects [LINGuistics 165, 2013 SJSU]
+Updating lab assignments from coursework (legacy). The entire field of ML and AI has changed since I undertook the MA in Linguistics (Compuatation Linguistics focus) at SJSU 2010-2013. Neural networks, transformations, and other deep learning techniques that have given us AI (artificial intelligence) and large language models (LLMs) are now key. 
