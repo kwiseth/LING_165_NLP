@@ -13,165 +13,101 @@
 
 # ling165_lab5.py
 
-import sys, os
+import sys
 from operator import itemgetter
 
-
-brown_f = open('brown.words', 'r') 
-brown_words = brown_f.readlines()
-brown_f.close()
-
-brown_words = [word.strip() for word in sorted(brown_words, key=len)] # Get rid of line endingsand sort by length of word
+# Open and process the Brown dictionary
+with open('brown.words', 'r') as brown_f:
+    brown_words = [word.strip().upper() for word in sorted(brown_f.readlines(), key=len)]
 
 def lookup_word(some_word):
-    test_word = some_word
-    if test_word in brown_words:
-        return True
-    else:
-        return False
+    """Check if the word exists in the Brown dictionary."""
+    return some_word in brown_words
 
 def get_brown_ltd(some_word):
-    """This method is intended to limit the search space to which edit distance (levenshtein) is applied for each word look-up. This is less restrictive
-    than get_brown_ltd_narrow in that we only look at word length and not initial character or ending character."""
+    """Limit search space to words within +2/-1 length of `some_word`."""
     wd_len = len(some_word)
-    len_lim_start = wd_len-1 # beginning word length
-    len_lim_end = wd_len+2 # ending word length
-    brown_subset = []  
-    brown_subset = [word for word in brown_words if len(word) in range(len_lim_start, len_lim_end)]
-    return brown_subset
+    return [word for word in brown_words if wd_len - 1 <= len(word) <= wd_len + 2]
 
 def get_brown_ltd_narrow(some_word):
-    """This method is intended to limit the search space to which edit distance (levenshtein) is applied for each word look-up. """
+    """Further limit search space by length and matching start/end characters."""
     wd_len = len(some_word)
-    len_lim_start = wd_len-1 # beginning word length
-    len_lim_end = wd_len+2 # ending word length
-    brown_subset = []  
-    wd_start = some_word[0]
-    wd_end = some_word[-1]
-    brown_subset = [word for word in brown_words if len(word) in range(len_lim_start, len_lim_end)]
-    # Doing lookup against initial/final characters in string ... this turned out to be too limiting (eg swelcom didn't find welcome)
-    # but the words returned seem more 'real'
-    brown_less = [word for word in brown_subset if word[0] == wd_start or word[-1] == wd_end]
-    return brown_less
+    wd_start, wd_end = some_word[0], some_word[-1]
+    brown_subset = [word for word in brown_words if wd_len - 1 <= len(word) <= wd_len + 2]
+    return [word for word in brown_subset if word[0] == wd_start or word[-1] == wd_end]
 
 def minimumEditDistance(source, target):
-    """ Minimum edit distance based on Jurafsky-Martin text p. 76 Figure 3.25. This is basically the same
-    process we used in class with paper/pencil to fill-in the table of minimum values between a source word (down) and
-    a target word (across). """
-    n = len(target)
-    m = len(source)
-    # Creates the distance matrix and initializes values that will capture the minimum distances between each 'slot' in traversing the table 
-    distance = [[0 for i in range(m + 1)] for j in range(n + 1)]  
-    for i in range(1, n + 1): # Creates a vector from empty string with distance for each add'l char in string (row) eg '#dog' = [0, 1, 2, 3]
-        distance[i][0] = distance[i-1][0] + insert_char_cost(target[i-1]) # empty string
-    for j in range(1, m + 1): # Creates a vector from empty string with distance for each add'l char in string (column) eg '#cat' = [0, 1, 2,3]
-        distance[0][j] = distance[0][j-1] + delete_char_cost(source[j-1]) # Fill the first column from empty string 
-    for i in range(1, n + 1):  # loop through the substrings and populate the 'slots' in the matrix with minimum values
+    """Calculate minimum edit distance between source and target."""
+    n, m = len(target), len(source)
+    distance = [[0] * (m + 1) for _ in range(n + 1)]
+    
+    for i in range(1, n + 1):
+        distance[i][0] = i
+    for j in range(1, m + 1):
+        distance[0][j] = j
+        
+    for i in range(1, n + 1):
         for j in range(1, m + 1):
-            distance[i][j] = min(distance[i-1][j] + 1,
-                                 distance[i][j-1] + 1,
-                                 distance[i-1][j-1] + diff_char_cost(source[j-1], target[i-1]))
+            cost = 0 if source[j - 1] == target[i - 1] else 1
+            distance[i][j] = min(
+                distance[i - 1][j] + 1,
+                distance[i][j - 1] + 1,
+                distance[i - 1][j - 1] + cost
+            )
     return distance[n][m]
 
-def insert_char_cost(some_char):
-    """Cost add a character (one by one) from the empty string. """
-    return 1
-
-def delete_char_cost(some_char):
-    """Cost to delete a character one by one to the empty string."""
-    return 1
-
-def diff_char_cost(source_char, target_char):
-    """ Cost for substituting character.  """
-    if source_char == target_char:
-        return 0
+def spell_check(word):
+    """Perform spell check, returning close matches within edit distance 4."""
+    word = word.upper().strip()
+    if lookup_word(word):
+        print("Word found in the Brown dictionary:", word)
     else:
-        return 1
+        brown_words_limited = get_brown_ltd_narrow(word)
+        word_distances = {
+            (word, candidate): minimumEditDistance(word, candidate) for candidate in brown_words_limited
+        }
+        sorted_wd_pr = sorted(word_distances.items(), key=itemgetter(1))
 
+        # Display results by distance
+        close_matches = [item for item in sorted_wd_pr if item[1] <= 2]
+        further_matches = [item for item in sorted_wd_pr if 2 < item[1] <= 4]
 
-# Menu setup for processing choice (file or individual word entered at command prompt)
-selection = ""
-valid_num = [0, 9]
-
-# Welcome message and character-based menu to display options.
-print(' ')
-print('Ling 165 Lab 5: Spelling Correction and Levenshtein Distance')
-print('-' * 80 )
-print('This script looks up a word in the Brown dictionary and (if word is found) prints it,')
-print('otherwise, calculates the Levenshtein distance to the words closest ')
-print('to it. After calculating the distance, the script notifies you if no words exist in the Brown') 
-print('dictionary within 4 edits (an edit distance of 4) to the word entered.')
-print('')
-print('9: Run-through the test.me file. ')
-print('0: Quit this script. ')
-print(' ')
-
-while selection != "0":  # While-loop and menu-selections not needed if script to be part of actual spell correction module 
-  
-    # selected numbers that will drive the file selection
-    selection = raw_input('Enter a word (or enter 9 or 0): ')
-
-    if selection.isalpha():
-        test_word = selection.upper()
-        if lookup_word(test_word.strip()):
-            print("Word found in the brown.words file: ")
-            print(test_word)
+        if close_matches:
+            for item in close_matches:
+                print(f"{item[0][0]} --> {item[0][1]} \t {item[1]}")
+        elif further_matches:
+            print("No words within Levenshtein distance of 2. Here are words with distance 3 or 4:")
+            for item in further_matches:
+                print(f"{item[0][0]} --> {item[0][1]} \t {item[1]}")
         else:
-            brown_words_limited = get_brown_ltd_narrow(test_word) # Reduce the search space
-            word_pair_lev = {} # Create a dictionary of the results (to be further processed)
-            sorted_wd_pr = []
-            for word in brown_words_limited:
-                word_pair_lev[test_word, word] = minimumEditDistance(test_word, word)
-                sorted_wd_pr = sorted(word_pair_lev.items(), key=itemgetter(1, 0)) # Sort by the levenshtein distance value
-                sorted_wd_pr_first = [item for item in sorted_wd_pr if item[1] <=2] # Reduce down to just those with edit distance <=2
-                sorted_wd_pr_second = [item for item in sorted_wd_pr if item[1] > 2 and item[1]<=4] # Reduce down to just between 2 and 4
-            if len(sorted_wd_pr_first)>0:
-                for item in sorted_wd_pr_first:
-                    print(item[0][0] + " \t-->  " + item[0][1] + "\t\t" + str(item[1]))
-            elif len(sorted_wd_pr_first) == 0 and len(sorted_wd_pr_second) >0:
-                print("No words in brown dictionary within levenshtein distance of 2, so here are words between 3 and 4")
-                for item in sorted_wd_pr_second:
-                    print(item[0][0] + " \t-->  " + item[0][1] + "\t\t" + str(item[1]))
-            elif len(sorted_wd_pr_first) == 0 and len(sorted_wd_pr_second) == 0:
-                print("Cannot find any words within 4 edits of the word you entered.")
-                
-           
-    elif selection.isdigit():
-        selection = int(selection)
-        if selection in valid_num:
-            if selection == 9:
-                # Open the test.me file, lookup each word in the dictionary, and
-                # if it's in the dictionary, print out the word; if not, print out similar
-                # words and Levenshtein distance
-                print("Processing the test.me file...")
-                file = open('test.me', 'r') 
-                test_word = file.readlines()
-                file.close()
+            print("No words within edit distance of 4 found.")
 
-                for line in test_word: # each line in the file is a word
-                    if lookup_word(line.strip()):
-                        print("Word found in the brown.words file: ")
-                        print(line)
-                    else:
-                        test_word = line.strip() # Get rid of the \n 
-                        brown_words_limited = get_brown_ltd_narrow(test_word)
-                        word_pair_lev = {} # Create a dictionary of the results (to be further processed)
-                        sorted_wd_pr = []  # To be used to create a list of word choices
-                        for word in brown_words_limited:
-                        # create a dictionary of word pairs and levenshtein distance and then process that
-                            word_pair_lev[test_word, word] = minimumEditDistance(test_word, word)
-                            sorted_wd_pr = sorted(word_pair_lev.items(), key=itemgetter(1)) #items or iteritems??
-                            sorted_wd_pr = [item for item in sorted_wd_pr if item[1] <=2 ]
-                        for item in sorted_wd_pr:
-                            print(item[0][0] + " \t-->  " + item[0][1] + "\t\t" + str(item[1]))                          
+def process_file(filename):
+    """Process words from a file, applying spell check to each."""
+    with open(filename, 'r') as file:
+        for line in file:
+            spell_check(line.strip())
 
-            elif selection == 0:
-                print("Goodbye.")
-                sys.exit()  
+# Main program
+def main():
+    print("\nLing 165 Lab 5: Spelling Correction and Levenshtein Distance")
+    print('-' * 80)
+    print("This script looks up a word in the Brown dictionary and calculates Levenshtein distances for spelling correction.")
+    print("\n9: Run test.me file\n0: Quit\n")
 
+    while True:
+        selection = input('Enter a word (or enter 9 or 0): ')
+        
+        if selection.isdigit() and int(selection) == 9:
+            print("Processing the test.me file...")
+            process_file('test.me')
+        elif selection.isdigit() and int(selection) == 0:
+            print("Goodbye.")
+            sys.exit()
+        elif selection.isalpha():
+            spell_check(selection)
         else:
-            print("Please enter a word or valid menu selection. ")
+            print("Invalid input. Please enter a word, or choose 9 to run the test file, or 0 to exit.")
 
-    else:
-        print("Please enter a word or valid menu selection.")
-
+if __name__ == "__main__":
+    main()
