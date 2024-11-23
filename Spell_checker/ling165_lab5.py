@@ -97,10 +97,11 @@ valid_num = [0, 9]
 print(' ')
 print('Ling 165 Lab 5: Spelling Correction and Levenshtein Distance')
 print('-' * 80 )
-print('This script looks up a word in the Brown dictionary and (if word is found) prints it,')
-print('otherwise, calculates the Levenshtein distance to the words closest ')
-print('to it. After calculating the distance, the script notifies you if no words exist in the Brown') 
-print('dictionary within 4 edits (an edit distance of 4) to the word entered.')
+print('This script looks up a word in the Brown dictionary and prints it')
+print('if that word is found. If the word isn\'t found, the script calculates')
+print('the Levenshtein distance to the most similar word to it. The script ') 
+print('also notifies you if no similar words are found in the dictionary within')
+print('a Levenshtein distance of 4 to the word that you entered.')
 print('')
 print('9: Run-through the test.me file. ')
 print('0: Quit this script. ')
@@ -109,7 +110,7 @@ print(' ')
 while selection != "0":  # While-loop and menu-selections not needed if script to be part of actual spell correction module 
   
     # selected numbers that will drive the file selection
-    selection = raw_input('Enter a word (or enter 9 or 0): ')
+    selection = input('Enter a word (or enter 9 or 0): ')
 
     if selection.isalpha():
         test_word = selection.upper()
@@ -174,4 +175,3 @@ while selection != "0":  # While-loop and menu-selections not needed if script t
 
     else:
         print("Please enter a word or valid menu selection.")
-
