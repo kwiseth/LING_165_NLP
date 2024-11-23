@@ -1,13 +1,11 @@
-# Apply the settings to each directory if needed
 Counting_smoothing_n-grams/*.py linguist-language=Python
 Part-of-speech_tagging_HMM/*.py linguist-language=Python
 Spell_checker/*.py linguist-language=Python
 Top_20_informative_words/*.py linguist-language=Python
 Word-sense_disambiguation/*.py linguist-language=Python
 
-# Optional: If you have other file extensions that contain Python code, add them here
-*.save linguist-language=Python
-*.txt linguist-detectable=false  # Avoid GitHub counting large datasets as the primary language
-*.csv linguist-detectable=false  # Mark any dataset files as non-code
-
+Counting_smoothing_n-grams/data/* linguist-detectable=false
+Counting_smoothing_n-grams/*.save linguist-detectable=false
+Part-of-speech_tagging_HMM/*.save linguist-detectable=false
+Part-of-speech_tagging_HMM/*.docx linguist-detectable=false
 
