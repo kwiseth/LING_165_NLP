@@ -175,3 +175,4 @@ while selection != "0":  # While-loop and menu-selections not needed if script t
 
     else:
         print("Please enter a word or valid menu selection.")
+vim: syntax=python
