@@ -1,3 +1,7 @@
 *.pyc
-
+**/Data
+**/data_3_only
+*.words
+**/brown
+**/brown2
 
