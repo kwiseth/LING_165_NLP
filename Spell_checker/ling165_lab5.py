@@ -1,3 +1,6 @@
+#!/usr/bin/python3/ling165_lab5.py
+
+
 # Ling 165 kwiseth  1-Sept-2013
 # This script looks-up a word entered at the command line in the brown.words file, and if found, prints the word.
 # If not found, the script then narrows the search space in brown to words that are +2/-1 length of word entered and
@@ -175,4 +178,3 @@ while selection != "0":  # While-loop and menu-selections not needed if script t
 
     else:
         print("Please enter a word or valid menu selection.")
-vim: syntax=python

@@ -1,3 +1,6 @@
+#!/usr/bin/python3/get_words_utf8_clean_less_function.py
+
+
 def get_words_utf8_clean_less(some_line):
     """ Function that accepts a line from the New Yorker article (processed using Hahn's clean.py script) and replaces the UTF-8 codepoints with ASCII chars.
     After re-doing some portions of lab 3, I see that some basic string functions are better than regex for punctuation items, so this

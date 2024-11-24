@@ -1,3 +1,6 @@
+#!/usr/bin/python3/ling165_lab4.py
+
+
 """Top-twenty informative words (tf-idf, llr)"""
 
 __author__ = """Kelli Wiseth (kelli@alameda-tech-lab.com)"""

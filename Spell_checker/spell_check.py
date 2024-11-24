@@ -1,3 +1,5 @@
+#!/usr/bin/python3/spell_check.py
+
 # spell_check.py
 # 21-Nov-2024 Revising lab 5 from Ling 165 for python and other improvements.
 # Ling 165 kwiseth  1-Sept-2013

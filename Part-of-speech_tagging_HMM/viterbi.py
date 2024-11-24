@@ -1,3 +1,5 @@
+#!/usr/bin/python3/viterbi.py
+
 """Viterbi algorithm for LING165"""
 
 __author__ = """Hahn Koo (hahn.koo@sjsu.edu)"""

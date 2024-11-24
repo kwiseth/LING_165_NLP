@@ -1,3 +1,4 @@
+#!/usr/bin/python3/guess.py
 # Ling 165 Lab 1 kwiseth Feb-Mar 2013
 # guess.py
 # Uses frequency counts from train.py to estimate expected

@@ -1,3 +1,7 @@
+#!/usr/bin/python3/ling165_lab3.py
+
+
+
 # ling165_lab3.py   28-August-2013 Final version: Best possible result is 82% correct. The "lab3_error.log" file contains
 # incorrectly labeled sentences and the bag-of-words that comprised the sentence. 
 # Ling 165 kwiseth

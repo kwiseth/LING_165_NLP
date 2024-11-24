@@ -1,3 +1,4 @@
+#!/usr/bin/python3/train.py
 # Updated 2024-30-March (kwiseth)
 # Ling 165 Lab 1 kwiseth Feb and Mar 2013
 # train.py

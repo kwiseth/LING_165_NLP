@@ -1,3 +1,5 @@
+#!/usr/bin/python3/smooth165.py
+
 """Functions for smoothing HMM probabilities"""
 
 __author__ = """Hahn Koo (hahn.koo@sjsu.edu)"""

@@ -1,3 +1,4 @@
+#!/usr/bin/python3/bigram.py
 # Ling 165 Lab 1 kwiseth Feb and Mar 2013
 # bigram.py
 # Methods that will be used to create dictionary and process bigrams

@@ -1,3 +1,4 @@
+#!/usr/bin/python3/probs.py
 # Ling 165 Lab 1 kwiseth (updated 2024)
 # Used OpenDevin to modify sgt.py (20-June-2024)
 # Original code provided by Hahn Koo (2013)

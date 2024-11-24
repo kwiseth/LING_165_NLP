@@ -1,3 +1,5 @@
+#!/usr/bin/python3/ling165_lab2.py
+
 # 21-Nov-2024 Updating code for python and other changes
 # Part of speech (POS) tagging
 # Ling 165 kwiseth

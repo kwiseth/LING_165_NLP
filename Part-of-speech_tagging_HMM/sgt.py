@@ -1,3 +1,6 @@
+#!/usr/bin/python3/sgt.py
+
+
 """Simple Good-Turing Smoothing - Gale and Sampson (1995)"""
 
 __author__ = """Hahn Koo (hahn.koo@sjsu.edu)"""
